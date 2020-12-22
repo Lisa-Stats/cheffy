@@ -1,0 +1,4 @@
+{:cheffy/app           {:jdbc-url #ig/ref :db/postgres}
+ :db/postgres          {:jdbc-url "jdbc-url"}
+ :server/jetty         {:handler #ig/ref :cheffy/app
+                        :port 3000}}
