@@ -1,16 +1,12 @@
 (ns cheffy.server
-  (:require [environ.core :refer [env]]
+  (:require [cheffy.router :as router]
+            [environ.core :refer [env]]
             [integrant.core :as ig]
-            [reitit.ring :as ring]
             [ring.adapter.jetty :as jetty]))
 
 (defn app
-  [_env] ;;config from cheffy/app becomes this
-  (ring/ring-handler
-   (ring/router
-    [["/"
-      {:get {:handler (fn [_req] {:status 200
-                                  :body "Hello world"})}}]])))
+  [env]
+  (router/routes env))
 
 (defmethod ig/init-key :cheffy/app
   [_ config]
