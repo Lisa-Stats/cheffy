@@ -20,8 +20,8 @@
 (def db (-> state/system :db/postgres))
 
 (comment
-  (app {:request-method :get
-        :uri "/v1/recipes"})
+  (app {:request-method :get   ;;helps test if all changes that we made to
+        :uri "/swagger.json"}) ;;our app are working
   (go)
   (halt)
   (reset))
