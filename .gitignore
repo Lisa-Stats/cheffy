@@ -1,2 +1,4 @@
 .cpcache/
+.DS_Store
+.env
 .nrepl-port
