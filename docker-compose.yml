@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+
+  cheffy-postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - cheffy-data:/var/lib/postgresql/data
+
+volumes:
+  cheffy-data:
