@@ -4,6 +4,8 @@
    [integrant.core :as ig]
    [integrant.repl :as ig-repl]
    [integrant.repl.state :as state]
+   [next.jdbc :as jdbc]
+   [next.jdbc.sql :as sql]
    ))
 
 (ig-repl/set-prep!
@@ -22,6 +24,8 @@
 (comment
   (app {:request-method :get   ;;helps test if all changes that we made to
         :uri "/swagger.json"}) ;;our app are working
+  (jdbc/execute! db ["SELECT * FROM recipe WHERE public = true"])
+  (sql/find-by-keys db :recipe {:public true})
   (go)
   (halt)
   (reset))
