@@ -22,12 +22,12 @@
                        muuntaja/format-middleware]}})
 
 (defn routes
-  [env]
+  [config]
   (ring/ring-handler
    (ring/router
     [swagger-docs
      ["/v1"
-      (recipe/routes env)]]
+      (recipe/routes config)]]
     router-config)
    (ring/routes
     (swagger-ui/create-swagger-ui-handler {:path "/"}))))
