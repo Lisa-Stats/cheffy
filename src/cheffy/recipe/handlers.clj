@@ -5,5 +5,6 @@
 (defn list-all-recipes
   [db]
   (fn [_request]
-    (let [recipes (recipe-db/find-all-recipes db)]
+    (let [uid "auth0|5ef440986e8fbb001355fd9c"
+          recipes (recipe-db/find-all-recipes db uid)]
       (rr/response recipes))))
