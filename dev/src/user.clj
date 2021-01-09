@@ -6,7 +6,9 @@
    [integrant.repl.state :as state]
    [next.jdbc :as jdbc]
    [next.jdbc.sql :as sql]
-   ))
+   [reitit.coercion]
+   [reitit.coercion.spec]
+   [reitit.core]))
 
 (ig-repl/set-prep!
  (fn [] (-> "resources/config.edn"
@@ -21,9 +23,20 @@
 (def app (-> state/system :cheffy/app))
 (def db (-> state/system :db/postgres))
 
+(def router
+  (reitit.core/router
+   ["/v1/recipes/:recipe-id"
+    {:coercion reitit.coercion.spec/coercion
+     :parameters {:path {:recipe-id int?}}}]
+   {:compile reitit.coercion/compile-request-coercers}))
+
 (comment
-  (app {:request-method :get   ;;helps test if all changes that we made to
-        :uri "/swagger.json"}) ;;our app are working
+  (reitit.coercion/coerce!
+   (reitit.core/match-by-path router "/v1/recipes/1234"))
+
+  (app {:request-method :get
+        :uri "/v1/recipes/1234-recipe"})
+
   (jdbc/execute! db ["SELECT * FROM recipe WHERE public = true"])
   (sql/find-by-keys db :recipe {:public true})
   (time
