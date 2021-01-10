@@ -1,7 +1,10 @@
 (ns cheffy.router
   (:require [cheffy.recipe.routes :as recipe]
             [muuntaja.core :as m]
+            [reitit.coercion.spec :as coercion-spec]
             [reitit.ring :as ring]
+            [reitit.ring.coercion :as coercion]
+            [reitit.ring.middleware.exception :as exception]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]))
@@ -16,10 +19,13 @@
                       :version "1.0.0"}}
      :handler (swagger/create-swagger-handler)}}])
 
-(def router-config
-  {:data {:muuntaja m/instance
+(def router-config ;;coming in after the routes
+  {:data {:coercion coercion-spec/coercion
+          :muuntaja m/instance
           :middleware [swagger/swagger-feature
-                       muuntaja/format-middleware]}})
+                       muuntaja/format-middleware
+                       exception/exception-middleware
+                       coercion/coerce-request-middleware]}})
 
 (defn routes
   [config]
