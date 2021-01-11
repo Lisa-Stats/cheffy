@@ -13,6 +13,16 @@
            :drafts drafts})
         {:public public}))))
 
+(defn insert-recipe!
+  [db {:keys [recipe-id uid name prep-time img]}]
+  (sql/insert! db :recipe {:recipe_id recipe-id
+                           :uid uid
+                           :name name
+                           :prep_time prep-time
+                           :public false
+                           :img img
+                           :favourite_count 0}))
+
 (defn find-recipe-by-id
   [db recipe-id]
   (with-open [conn (jdbc/get-connection db)] ;;returns map within a vector

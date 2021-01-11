@@ -1,6 +1,8 @@
 (ns cheffy.recipe.handlers
   (:require [cheffy.recipe.db :as recipe-db]
-            [ring.util.response :as rr]))
+            [cheffy.responses :as responses]
+            [ring.util.response :as rr])
+  (:import (java.util UUID)))
 
 (defn list-all-recipes
   [db]
@@ -8,6 +10,15 @@
     (let [uid "auth0|5ef440986e8fbb001355fd9c"
           recipes (recipe-db/find-all-recipes db uid)]
       (rr/response recipes))))
+
+(defn create-recipe!
+  [db]
+  (fn [request]
+    (let [recipe-id (str (UUID/randomUUID))
+          uid "auth0|5ef440986e8fbb001355fd9c"
+          recipe (-> request :parameters :body)]
+      (recipe-db/insert-recipe! db (assoc recipe :recipe-id recipe-id :uid uid))
+      (rr/created (str responses/base-url "/recipes/" recipe-id) {:recipe-id recipe-id}))))
 
 (defn retrieve-recipe
   [db]
