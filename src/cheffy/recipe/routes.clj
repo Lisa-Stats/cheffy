@@ -25,4 +25,8 @@
              :parameters {:path {:recipe-id string?}
                           :body {:name string? :prep-time int? :public boolean? :img string?}}
              :responses {204 {:body nil?}}
-             :summary "Update recipe"}}]]))
+             :summary "Update recipe"}
+       :delete {:handler (recipe/delete-recipe! db)
+                :parameters {:path {:recipe-id string?}}
+                :responses {204 {:body nil?}}
+                :summary "Delete recipe"}}]]))
