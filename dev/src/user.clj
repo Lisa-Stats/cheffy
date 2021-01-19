@@ -20,7 +20,7 @@
   (sql/update! (:db/postgres state/system) :recipe {:name "my-recipe"}
                {:recipe-id "a3dde84c-4a33-45aa-b0f3-4bf9ac997680"})
 
-    ;;app is now
+  ;;app is now
   (:cheffy/app state/system)
 
   ;;db is now
